@@ -74,6 +74,7 @@
     <Compile Include="PMS.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report.cs" />
     <Compile Include="UserControlAbout.cs">
       <SubType>UserControl</SubType>
     </Compile>

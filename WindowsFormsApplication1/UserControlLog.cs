@@ -45,6 +45,15 @@ namespace WindowsFormsApplication1
                 textBox1_0.Text = e.PM_AE_UG_1_0.ToString();
                 textBox2_5.Text = e.PM_AE_UG_2_5.ToString();
                 textBox10_0.Text = e.PM_AE_UG_10_0.ToString();
+
+                if (checkBoxReport.Checked)
+                {
+                    textBoxLog.AppendText("Lewei:"
+                                          + Report.SensorUpdate(e.PM_AE_UG_2_5.ToString(),
+                                              UserControlSettings.GatewayId,
+                                              UserControlSettings.UserKey)
+                                          + Environment.NewLine);
+                }
             }));
         }
 

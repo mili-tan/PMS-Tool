@@ -6,6 +6,7 @@ namespace WindowsFormsApplication1
 {
     public partial class UserControlSettings : UserControl
     {
+        public static string UserKey,GatewayId;
         public UserControlSettings()
         {
             InitializeComponent();
@@ -46,6 +47,12 @@ namespace WindowsFormsApplication1
             {
                 comboBoxPorts.SelectedItem = storedCom;
             }
+        }
+
+        private void ConnectButton_Click(object sender, EventArgs e)
+        {
+            GatewayId = textBoxGateway.Text;
+            UserKey = textBoxUserKey.Text;
         }
     }
 }

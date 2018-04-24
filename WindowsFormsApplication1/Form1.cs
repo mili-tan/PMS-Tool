@@ -133,5 +133,10 @@ namespace WindowsFormsApplication1
             e.Control.Dock = DockStyle.Fill;
             e.Control.Visible = false;
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

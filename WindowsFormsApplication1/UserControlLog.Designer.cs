@@ -50,8 +50,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.checkBoxSleepMode = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label8 = new System.Windows.Forms.Label();
+            this.checkBoxAutoSleep = new System.Windows.Forms.CheckBox();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.checkBoxReport = new System.Windows.Forms.CheckBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.timerReport = new System.Windows.Forms.Timer(this.components);
+            this.timerWake = new System.Windows.Forms.Timer(this.components);
+            this.timerCollectSleep = new System.Windows.Forms.Timer(this.components);
+            this.timerUI = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -81,7 +87,7 @@
             this.textBoxLog.Name = "textBoxLog";
             this.textBoxLog.ReadOnly = true;
             this.textBoxLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxLog.Size = new System.Drawing.Size(725, 221);
+            this.textBoxLog.Size = new System.Drawing.Size(725, 196);
             this.textBoxLog.TabIndex = 0;
             // 
             // buttonRead
@@ -128,7 +134,7 @@
             this.groupBox1.Controls.Add(this.textBoxCF_1_0);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox1.Location = new System.Drawing.Point(0, 221);
+            this.groupBox1.Location = new System.Drawing.Point(0, 196);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -276,30 +282,45 @@
             // groupBox2
             // 
             this.groupBox2.AutoSize = true;
+            this.groupBox2.Controls.Add(this.checkBoxAutoSleep);
+            this.groupBox2.Controls.Add(this.progressBar);
             this.groupBox2.Controls.Add(this.checkBoxReport);
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.checkBoxSleepMode);
             this.groupBox2.Controls.Add(this.buttonRead);
             this.groupBox2.Controls.Add(this.checkBoxActiveMode);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox2.Location = new System.Drawing.Point(0, 437);
+            this.groupBox2.Location = new System.Drawing.Point(0, 412);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox2.Size = new System.Drawing.Size(725, 127);
+            this.groupBox2.Size = new System.Drawing.Size(725, 152);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Modes";
             // 
-            // label8
+            // checkBoxAutoSleep
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(13, 91);
-            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(383, 15);
-            this.label8.TabIndex = 13;
-            this.label8.Text = "Not all sensors can support the above features.";
+            this.checkBoxAutoSleep.AutoSize = true;
+            this.checkBoxAutoSleep.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBoxAutoSleep.Location = new System.Drawing.Point(616, 83);
+            this.checkBoxAutoSleep.Name = "checkBoxAutoSleep";
+            this.checkBoxAutoSleep.Size = new System.Drawing.Size(101, 19);
+            this.checkBoxAutoSleep.TabIndex = 16;
+            this.checkBoxAutoSleep.Text = "AutoSleep";
+            this.checkBoxAutoSleep.UseVisualStyleBackColor = true;
+            this.checkBoxAutoSleep.CheckedChanged += new System.EventHandler(this.AutoSleep_CheckedChanged);
+            // 
+            // progressBar
+            // 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Location = new System.Drawing.Point(16, 118);
+            this.progressBar.Maximum = 3600000;
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(694, 10);
+            this.progressBar.TabIndex = 15;
+            this.progressBar.Value = 3600000;
             // 
             // checkBoxReport
             // 
@@ -312,6 +333,36 @@
             this.checkBoxReport.TabIndex = 14;
             this.checkBoxReport.Text = "Report to Lewei50";
             this.checkBoxReport.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(13, 91);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(383, 15);
+            this.label8.TabIndex = 13;
+            this.label8.Text = "Not all sensors can support the above features.";
+            // 
+            // timerReport
+            // 
+            this.timerReport.Enabled = true;
+            this.timerReport.Interval = 12000;
+            this.timerReport.Tick += new System.EventHandler(this.timerReport_Tick);
+            // 
+            // timerWake
+            // 
+            this.timerWake.Interval = 3600000;
+            this.timerWake.Tick += new System.EventHandler(this.timerWake_Tick);
+            // 
+            // timerCollectSleep
+            // 
+            this.timerCollectSleep.Interval = 300000;
+            this.timerCollectSleep.Tick += new System.EventHandler(this.timerCollectSleep_Tick);
+            // 
+            // timerUI
+            // 
+            this.timerUI.Tick += new System.EventHandler(this.timerUI_Tick);
             // 
             // UserControlLog
             // 
@@ -355,5 +406,11 @@
     private System.Windows.Forms.GroupBox groupBox2;
     private System.Windows.Forms.Label label8;
         private System.Windows.Forms.CheckBox checkBoxReport;
+        private System.Windows.Forms.Timer timerReport;
+        private System.Windows.Forms.Timer timerWake;
+        private System.Windows.Forms.Timer timerCollectSleep;
+        private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.Timer timerUI;
+        private System.Windows.Forms.CheckBox checkBoxAutoSleep;
     }
 }

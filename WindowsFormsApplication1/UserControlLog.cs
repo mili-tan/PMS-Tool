@@ -45,15 +45,6 @@ namespace WindowsFormsApplication1
                 textBox1_0.Text = e.PM_AE_UG_1_0.ToString();
                 textBox2_5.Text = e.PM_AE_UG_2_5.ToString();
                 textBox10_0.Text = e.PM_AE_UG_10_0.ToString();
-
-                if (checkBoxReport.Checked)
-                {
-                    textBoxLog.AppendText("Lewei:"
-                                          + Report.SensorUpdate(e.PM_AE_UG_2_5.ToString(),
-                                              UserControlSettings.GatewayId,
-                                              UserControlSettings.UserKey)
-                                          + Environment.NewLine);
-                }
             }));
         }
 
@@ -86,6 +77,42 @@ namespace WindowsFormsApplication1
             {
                 pms.WakeUp();
             }
+        }
+
+        private void timerReport_Tick(object sender, EventArgs e)
+        {
+            if (checkBoxReport.Checked)
+            {
+                textBoxLog.AppendText("Lewei:"
+                                      + Report.SensorUpdate(textBox2_5.Text,
+                                          UserControlSettings.GatewayId,
+                                          UserControlSettings.UserKey)
+                                      + Environment.NewLine);
+            }
+        }
+
+        private void timerWake_Tick(object sender, EventArgs e)
+        {
+            checkBoxSleepMode.Checked = false;
+            timerCollectSleep.Enabled = true;
+            progressBar.Value = 3600000;
+        }
+
+        private void timerCollectSleep_Tick(object sender, EventArgs e)
+        {
+            checkBoxSleepMode.Checked = true;
+            timerCollectSleep.Enabled = false;
+        }
+
+        private void timerUI_Tick(object sender, EventArgs e)
+        {
+            progressBar.Value -= 100;
+        }
+
+        private void AutoSleep_CheckedChanged(object sender, EventArgs e)
+        {
+            timerWake.Enabled = checkBoxAutoSleep.Checked;
+            timerUI.Enabled = checkBoxAutoSleep.Checked;
         }
     }
 }

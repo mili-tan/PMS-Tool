@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 using System.IO.Ports;
 
@@ -15,6 +16,10 @@ namespace WindowsFormsApplication1
         private void UserControlSettings_Load(object sender, EventArgs e)
         {
             buttonRefresh_Click(this, EventArgs.Empty);
+            if (File.Exists("key.txt"))
+            {
+                textBoxUserKey.Text = File.ReadAllText("key.txt");
+            }
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
